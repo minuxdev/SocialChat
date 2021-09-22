@@ -4,150 +4,125 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ChatRoom</title>
-
-    <style>
-        *{
-            padding: 0;
-            margin: 0;
-            outline: none;
-            border: none;
-            box-sizing: border-box;
-        }
-
-        body{
-            display: flex;
-            flex-direction: column;
-        }
-
-        main{
-            min-height: 100vh;
-            flex: 1 0 auto;
-        }
-
-        .text-field{
-            display: block;
-            background-color: #D7DBDD;
-            border-radius: 4px;
-            padding: 1em;
-            width: 50%;
-            margin: auto;
-        }
-        .text-field input{
-            padding: 1em;
-            border-radius: 2px;
-        }
-        .text-field button{
-            padding: 0.5em 1em;
-            width: 120px;
-            border-radius: 2px;
-        }
-
-        #chat{
-            width: 85%;
-            padding: 1em;
-        }
-
-        #message{
-            border-radius: 10px 0 10px 0;
-            background-color: #D7DBDD;
-            padding: 0.6em 1em;
-            margin: 1em auto;
-        }
-
-        .form{
-            width: 90%;
-            margin: 1em auto;
-            display: flex;
-            border: 1px solid dodgerblue;
-            justify-content: space-between;
-        }
-        #msg{
-            padding: 1em;
-            width: 76%;
-        }
-        .form button{
-            width: 23%;
-            padding: 1em;
-        }
-
-    </style>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+    <title>Chat</title>
 </head>
 <body>
     <main>
-        <div class="text-field">
-            <h2>Log In</h2>
-            <hr>
-            <label for="Username"><input id="username" type="text" placeholder="username"></label><br><br>
+        <section id="login">
+            <input id="username" type="text" placeholder="username"><br><br>
             <button onclick="submit_data()">Send</button>
+        </section>
+        <div class="conteiner">
+            <section class="status">
+                <section class="rooms">
+                    <h4>Rooms</h4>
+                    <hr>
+                    <p>Python</p>
+                    <p>JavaScript</p>
+                    <p>Css</p>
+                </section>
+
+                <section class="active" id="active">
+                    <h4>Online</h4>
+                </section>
+            </section>
+
+            <section id="chat">
+                <div id="chat-msg"></div>
+
+                <form class="form">
+                    <input type="text" id="msg" placeholder="Message...">
+                    <button id="btn" onclick="send_message()">Send</button>
+                </form>
+            </section>
+
         </div>
-        <div id="chat"></div>    
     </main>
 
-    <div class="form" style="display: none;">
-        <input id="msg" type="text" placeholder="Your message...">
-        <button onclick="send_message()">SEND</button>
-    </div>
-
-
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+
     <script>
-        var socket = io()
-        
-        function submit_data(){
-            let form = document.getElementById('username').value;
-            if (form == ''){
-                alert('Provide a username...');
-                return false
-            } else{
-                socket.emit('entering', {user: form})
-            }
-        }
-
-        function send_message(){
-            let msg = document.getElementById('msg').value;
-            if (msg == ''){
-                alert('Empty messages are not allowed!');
-                return false
-            } else {
-                socket.emit('chatting', msg)
-                console.log(msg)
-            }
-        }
-
-        function go_to_chat(msg){
-            document.getElementsByClassName('text-field')[0].style.display = 'none';
-            document.getElementsByClassName('form')[0].style.display = 'block';
-            var tag = document.createElement('p');
-            var text = document.createTextNode(msg);
-            tag.appendChild(text);
-            document.getElementById('chat').appendChild(tag)
-
-        }
-
+        var socket = io();
         socket.on('user_added', function(msg){
-                go_to_chat(msg)
-            }
-        )
+            go_to_chat(msg)
+        }
+    )
 
-        socket.on('chatroom', function(msg){
-            var tag = document.createElement('p');
-            var text = document.createTextNode(msg);
-            tag.id = 'message'
-            tag.appendChild(text);
-            document.getElementById('chat').appendChild(tag)
-            }
-        )
+    function submit_data(){
+        let form = document.getElementById('username').value;
+        if (form == ''){
+            alert('Provide a username...');
+            return false
+        } else{
+            socket.emit('entering', {user: form})
+        }
+    }
+    
+    function send_message(){
+        let msg = document.getElementById('msg').value;
+        if (msg == ''){
+            alert('Empty messages are not allowed!');
+            return false
+        } else {
+            socket.emit('chatting', msg)
+        }
+    }
 
-        socket.on('leaving', (msg) =>{
-            var tag = document.createElement('p');
-            var text = document.createTextNode(msg);
-            tag.appendChild(text);
-            document.getElementById('chat').appendChild(tag)
+    block_events('btn')
+
+
+    function block_events(id){
+            let btn = document.getElementById(id)
+            btn.addEventListener('click', function(event){
+            event.preventDefault()
         })
+    }
 
 
+
+    function go_to_chat(msg){
+        var conteiner = document.getElementsByClassName('conteiner')[0]
+        document.getElementById('login').style.display = 'none';
+        
+        if (screen.width < 600){
+            conteiner.style.display = 'block';
+        } else {
+            conteiner.style.display = 'flex'
+        }
+        
+        var tag = document.createElement('p');
+        var text = document.createTextNode(msg);
+        tag.appendChild(text);
+        tag.id = 'active'
+        document.getElementById('active').appendChild(tag)
+    }
+
+    socket.on('chatroom', function(msg){
+        var tag = document.createElement('p');
+        var text = document.createTextNode(msg);
+        tag.id = 'u-msg'
+        tag.appendChild(text);
+        document.getElementById('chat-msg').appendChild(tag)
+        }
+    )
+
+    socket.on('leaving', (msg) =>{
+        var tag = document.createElement('p');
+        var text = document.createTextNode(msg);
+        tag.appendChild(text);
+        document.getElementById('chat').appendChild(tag)
+    })
+
+    socket.on('historic', function(msg){
+        for (let m = 0; m < msg.length; m++){
+            var tag = document.createElement('p');
+            var text = document.createTextNode(msg[m]);
+            tag.id = 'u-msg'
+            tag.appendChild(text);
+            document.getElementById('chat-msg').appendChild(tag)
+        }
+    })
     </script>
 </body>
 </html>

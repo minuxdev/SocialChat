@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Chat</title>
+</head>
+<body>
+    <main>
+        <section id="login">
+            <input id="username" type="text" placeholder="username"><br><br>
+            <button onclick="submit_data()">Send</button>
+        </section>
+        <div class="conteiner">
+            <section class="status">
+                <section class="rooms">
+                    <h4>Rooms</h4>
+                    <hr>
+                    <p>Python</p>
+                    <p>JavaScript</p>
+                    <p>Css</p>
+                </section>
+
+                <section class="active">
+                    <h4>Online</h4>
+                    <p>Minux</p>
+                    <p>Dev</p>
+                    <p>Clara</p>
+                </section>
+            </section>
+
+            <section id="chat">
+                <div class="chat-msg">
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+                    <p class="u-msg">Adipisicing eiusmod minim Lorem culpa  officia eiusmod nulla consectetur.</p>
+
+                </div>
+                <form class="form">
+                    <input type="text" id="msg" placeholder="Message...">
+                    <button id="btn" >Send</button>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
